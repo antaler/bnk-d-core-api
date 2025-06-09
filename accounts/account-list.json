@@ -1,0 +1,55 @@
+{
+  "content": [
+    {
+      "accountId": "ACC123456789",
+      "accountNumber": "1234567890",
+      "accountType": "SAVINGS",
+      "status": "ACTIVE",
+      "balance": {
+        "available": 5000.75,
+        "currency": "EUR"
+      },
+      "primaryHolder": {
+        "name": "Juan García Martínez",
+        "customerId": "CUS001"
+      },
+      "lastUpdated": "2025-06-09T10:30:00Z"
+    },
+    {
+      "accountId": "ACC987654321",
+      "accountNumber": "9876543210",
+      "accountType": "CHECKING",
+      "status": "ACTIVE",
+      "balance": {
+        "available": 2500.50,
+        "currency": "EUR"
+      },
+      "primaryHolder": {
+        "name": "María López Sánchez",
+        "customerId": "CUS002"
+      },
+      "lastUpdated": "2025-06-08T15:45:00Z"
+    },
+    {
+      "accountId": "ACC456789123",
+      "accountNumber": "4567891230",
+      "accountType": "BUSINESS",
+      "status": "ACTIVE",
+      "balance": {
+        "available": 15000.00,
+        "currency": "EUR"
+      },
+      "primaryHolder": {
+        "name": "Empresa XYZ S.L.",
+        "customerId": "CUS003"
+      },
+      "lastUpdated": "2025-06-09T09:15:00Z"
+    }
+  ],
+  "pagination": {
+    "totalElements": 25,
+    "totalPages": 2,
+    "currentPage": 0,
+    "pageSize": 20
+  }
+}

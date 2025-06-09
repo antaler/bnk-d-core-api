@@ -1,0 +1,311 @@
+openapi: 3.0.0
+info:
+  title: Account Detail API
+  description: API for retrieving bank account details
+  version: 1.0.0
+
+paths:
+  /accounts:
+    get:
+      summary: Get a list of accounts
+      description: Retrieve a summarized list of accounts
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: Page number for pagination
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: size
+          in: query
+          required: false
+          description: Number of items per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: status
+          in: query
+          required: false
+          description: Filter accounts by status
+          schema:
+            type: string
+            enum: [ACTIVE, INACTIVE, BLOCKED, DORMANT, FROZEN, PENDING_APPROVAL]
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AccountSummary'
+                  pagination:
+                    type: object
+                    properties:
+                      totalElements:
+                        type: integer
+                        description: Total number of elements
+                      totalPages:
+                        type: integer
+                        description: Total number of pages
+                      currentPage:
+                        type: integer
+                        description: Current page number
+                      pageSize:
+                        type: integer
+                        description: Number of items per page
+                required:
+                  - content
+                  - pagination
+
+  /accounts/{accountId}:
+    get:
+      summary: Get account details by ID
+      description: Retrieve detailed information about a specific bank account
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          description: The unique identifier of the account
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetail'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    AccountSummary:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: Unique identifier for the account
+        accountNumber:
+          type: string
+          description: Account number
+        accountType:
+          type: string
+          enum: [SAVINGS, CHECKING, CREDIT, MONEY_MARKET, CERTIFICATE_OF_DEPOSIT, BUSINESS]
+          description: Type of the account
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE, BLOCKED, DORMANT, FROZEN, PENDING_APPROVAL]
+          description: Current status of the account
+        balance:
+          type: object
+          properties:
+            available:
+              type: number
+              format: double
+              description: Available balance that can be withdrawn
+            currency:
+              type: string
+              description: Currency code (e.g., USD, EUR)
+        primaryHolder:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name of the primary account holder
+            customerId:
+              type: string
+              description: ID of the primary account holder
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Last update timestamp
+      required:
+        - accountId
+        - accountNumber
+        - accountType
+        - status
+        - balance
+        - primaryHolder
+
+    AccountDetail:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: Unique identifier for the account
+        accountNumber:
+          type: string
+          description: Account number
+        iban:
+          type: string
+          description: International Bank Account Number
+        swift:
+          type: string
+          description: SWIFT/BIC code of the bank
+        accountType:
+          type: string
+          enum: [SAVINGS, CHECKING, CREDIT, MONEY_MARKET, CERTIFICATE_OF_DEPOSIT, BUSINESS]
+          description: Type of the account
+        balance:
+          type: object
+          properties:
+            available:
+              type: number
+              format: double
+              description: Available balance that can be withdrawn
+            current:
+              type: number
+              format: double
+              description: Current balance including pending transactions
+            currency:
+              type: string
+              description: Currency code (e.g., USD, EUR)
+            lastTransactionDate:
+              type: string
+              format: date-time
+              description: Date and time of the last transaction
+        interestRate:
+          type: number
+          format: double
+          description: Current interest rate applied to the account
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE, BLOCKED, DORMANT, FROZEN, PENDING_APPROVAL]
+          description: Current status of the account
+        accountHolders:
+          type: array
+          description: List of all account holders and their relationships
+          items:
+            type: object
+            properties:
+              customerId:
+                type: string
+                description: Unique identifier of the account holder
+              name:
+                type: string
+                description: Name of the account holder
+              relationshipType:
+                type: string
+                enum: [PRIMARY, SECONDARY, AUTHORIZED_SIGNER, POWER_OF_ATTORNEY, GUARDIAN, TRUSTEE, BENEFICIARY]
+                description: Type of relationship with the account
+              relationshipStartDate:
+                type: string
+                format: date-time
+                description: Date when the relationship was established
+              taxId:
+                type: string
+                description: Tax identification number
+              permissions:
+                type: array
+                description: List of permissions this holder has on the account
+                items:
+                  type: string
+                  enum: [VIEW, WITHDRAW, DEPOSIT, CLOSE, MODIFY, AUTHORIZE_TRANSACTIONS]
+              contactInfo:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                    description: Primary email address
+                  phone:
+                    type: string
+                    description: Primary phone number
+                  address:
+                    type: object
+                    properties:
+                      street:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      country:
+                        type: string
+                      postalCode:
+                        type: string
+            required:
+              - customerId
+              - name
+              - relationshipType
+              - permissions
+        accountFeatures:
+          type: object
+          properties:
+            overdraftLimit:
+              type: number
+              format: double
+              description: Maximum overdraft amount allowed
+            overdraftFee:
+              type: number
+              format: double
+              description: Fee charged for using overdraft
+            monthlyMaintenanceFee:
+              type: number
+              format: double
+              description: Monthly fee for maintaining the account
+            minimumBalance:
+              type: number
+              format: double
+              description: Required minimum balance to avoid fees
+            isOnlineBankingEnabled:
+              type: boolean
+              description: Whether online banking is enabled for this account
+            isMobileBankingEnabled:
+              type: boolean
+              description: Whether mobile banking is enabled for this account
+            isCardAssociated:
+              type: boolean
+              description: Whether a debit/credit card is associated with this account
+        createdAt:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Last update timestamp
+      required:
+        - accountId
+        - accountNumber
+        - accountType
+        - balance
+        - status
+        - accountHolders
+        
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        details:
+          type: array
+          items:
+            type: string
+          description: Additional error details
+      required:
+        - code
+        - message

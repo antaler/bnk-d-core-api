@@ -1,0 +1,99 @@
+{
+  "accountId": "ACC123456789",
+  "accountNumber": "1234567890",
+  "iban": "ES9121000418450200051332",
+  "swift": "BSCHESMMXXX",
+  "accountType": "SAVINGS",
+  "balance": {
+    "available": 5000.75,
+    "current": 5200.75,
+    "currency": "EUR",
+    "lastTransactionDate": "2025-06-09T10:30:00Z"
+  },
+  "interestRate": 2.5,
+  "status": "ACTIVE",
+  "accountHolders": [
+    {
+      "customerId": "CUS001",
+      "name": "Juan García Martínez",
+      "relationshipType": "PRIMARY",
+      "relationshipStartDate": "2024-01-15T09:00:00Z",
+      "taxId": "12345678A",
+      "permissions": [
+        "VIEW",
+        "WITHDRAW",
+        "DEPOSIT",
+        "CLOSE",
+        "MODIFY",
+        "AUTHORIZE_TRANSACTIONS"
+      ],
+      "contactInfo": {
+        "email": "juan.garcia@email.com",
+        "phone": "+34612345678",
+        "address": {
+          "street": "Calle Mayor 123",
+          "city": "Madrid",
+          "state": "Madrid",
+          "country": "España",
+          "postalCode": "28001"
+        }
+      }
+    },
+    {
+      "customerId": "CUS002",
+      "name": "María López Sánchez",
+      "relationshipType": "SECONDARY",
+      "relationshipStartDate": "2024-02-20T14:30:00Z",
+      "taxId": "87654321B",
+      "permissions": [
+        "VIEW",
+        "WITHDRAW",
+        "DEPOSIT"
+      ],
+      "contactInfo": {
+        "email": "maria.lopez@email.com",
+        "phone": "+34623456789",
+        "address": {
+          "street": "Avenida Libertad 45",
+          "city": "Madrid",
+          "state": "Madrid",
+          "country": "España",
+          "postalCode": "28002"
+        }
+      }
+    },
+    {
+      "customerId": "CUS003",
+      "name": "Pedro Ramírez Vega",
+      "relationshipType": "AUTHORIZED_SIGNER",
+      "relationshipStartDate": "2025-01-10T11:15:00Z",
+      "taxId": "98765432C",
+      "permissions": [
+        "VIEW",
+        "DEPOSIT"
+      ],
+      "contactInfo": {
+        "email": "pedro.ramirez@email.com",
+        "phone": "+34634567890",
+        "address": {
+          "street": "Plaza España 78",
+          "city": "Madrid",
+          "state": "Madrid",
+          "country": "España",
+          "postalCode": "28003"
+        }
+      }
+    }
+  ],
+  "accountFeatures": {
+    "overdraftLimit": 1000.00,
+    "overdraftFee": 25.00,
+    "monthlyMaintenanceFee": 5.00,
+    "minimumBalance": 500.00,
+    "isOnlineBankingEnabled": true,
+    "isMobileBankingEnabled": true,
+    "isCardAssociated": true
+  },
+  "createdAt": "2024-01-15T09:00:00Z",
+  "lastUpdated": "2025-06-09T10:30:00Z"
+}
