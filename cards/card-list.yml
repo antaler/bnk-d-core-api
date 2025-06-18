@@ -1,0 +1,74 @@
+openapi: 3.0.0
+info:
+  title: Card List API
+  description: API para obtener el listado general de tarjetas bancarias
+  version: 1.0.0
+
+paths:
+  /cards:
+    get:
+      summary: Obtener listado de tarjetas
+      description: Recupera un listado de todas las tarjetas
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cards:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CardSummary'
+                required:
+                  - cards
+
+components:
+  schemas:
+    CardSummary:
+      type: object
+      properties:
+        cardId:
+          type: string
+          description: Identificador único de la tarjeta
+        cardNumber:
+          type: string
+          description: Número de la tarjeta (enmascarado)
+        cardType:
+          type: string
+          enum: [DEBIT, CREDIT, PREPAID, BUSINESS]
+          description: Tipo de tarjeta
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE, BLOCKED, EXPIRED]
+          description: Estado actual de la tarjeta
+        holder:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Nombre del titular
+            customerId:
+              type: string
+              description: ID del titular
+        expirationDate:
+          type: string
+          pattern: '^[0-9]{4}-[0-9]{2}$'
+          description: Fecha de expiración (YYYY-MM)
+        imageCode:
+          type: string
+          description: Código de imagen para mostrar la tarjeta
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Última actualización
+      required:
+        - cardId
+        - cardNumber
+        - cardType
+        - status
+        - holder
+        - expirationDate
+        - imageCode
+        - lastUpdated

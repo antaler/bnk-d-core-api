@@ -1,0 +1,74 @@
+openapi: 3.0.0
+info:
+  title: Card Movements API
+  description: API para obtener el listado de movimientos de una tarjeta bancaria
+  version: 1.0.0
+
+paths:
+  /cards/{cardId}/movements:
+    get:
+      summary: Obtener movimientos de tarjeta
+      description: Recupera el listado de movimientos asociados a una tarjeta bancaria
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          description: Identificador único de la tarjeta
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  movements:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CardMovement'
+                required:
+                  - movements
+
+components:
+  schemas:
+    CardMovement:
+      type: object
+      properties:
+        movementId:
+          type: string
+          description: Identificador único del movimiento
+        date:
+          type: string
+          format: date-time
+          description: Fecha y hora del movimiento
+        description:
+          type: string
+          description: Descripción del movimiento
+        amount:
+          type: number
+          format: double
+          description: Importe del movimiento
+        currency:
+          type: string
+          description: Moneda
+        type:
+          type: string
+          enum: [PURCHASE, WITHDRAWAL, REFUND, FEE, PAYMENT, ADJUSTMENT]
+          description: Tipo de movimiento
+        status:
+          type: string
+          enum: [PENDING, CONFIRMED, REJECTED]
+          description: Estado del movimiento
+        merchant:
+          type: string
+          description: Nombre del comercio o contraparte
+      required:
+        - movementId
+        - date
+        - description
+        - amount
+        - currency
+        - type
+        - status

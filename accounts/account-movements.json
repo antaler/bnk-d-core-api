@@ -1,0 +1,34 @@
+{
+  "movements": [
+    {
+      "movementId": "MOV123456789",
+      "date": "2025-06-10T14:30:00Z",
+      "description": "Transferencia recibida de Juan Pérez",
+      "amount": 1500.00,
+      "currency": "EUR",
+      "type": "DEPOSIT",
+      "status": "CONFIRMED",
+      "counterparty": "Juan Pérez",
+      "source": "INTERNAL",
+      "balance": {
+        "available": 3500.50,
+        "currency": "EUR"
+      }
+    },
+    {
+      "movementId": "MOV987654321",
+      "date": "2025-06-11T09:15:00Z",
+      "description": "Pago de recibo de luz",
+      "amount": -75.50,
+      "currency": "EUR",
+      "type": "PAYMENT",
+      "status": "CONFIRMED",
+      "counterparty": "Iberdrola",
+      "source": "CARD",
+      "balance": {
+        "available": 3425.00,
+        "currency": "EUR"
+      }
+    }
+  ]
+}

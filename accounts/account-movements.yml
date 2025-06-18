@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  title: Account Movements API
+  description: API para obtener el listado de movimientos de una cuenta bancaria
+  version: 1.0.0
+
+paths:
+  /accounts/{accountId}/movements:
+    get:
+      summary: Obtener movimientos de cuenta
+      description: Recupera el listado de movimientos asociados a una cuenta bancaria
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          description: Identificador único de la cuenta
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  movements:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AccountMovement'
+                required:
+                  - movements
+
+components:
+  schemas:
+    AccountMovement:
+      type: object
+      properties:
+        movementId:
+          type: string
+          description: Identificador único del movimiento
+        date:
+          type: string
+          format: date-time
+          description: Fecha y hora del movimiento
+        description:
+          type: string
+          description: Descripción del movimiento
+        amount:
+          type: number
+          format: double
+          description: Importe del movimiento
+        currency:
+          type: string
+          description: Moneda
+        type:
+          type: string
+          enum: [DEPOSIT, WITHDRAWAL, TRANSFER, PAYMENT, FEE, INTEREST, ADJUSTMENT]
+          description: Tipo de movimiento
+        status:
+          type: string
+          enum: [PENDING, CONFIRMED, REJECTED]
+          description: Estado del movimiento
+        counterparty:
+          type: string
+          description: Nombre del beneficiario, pagador o contraparte
+        source:
+          type: string
+          description: Origen del movimiento (por ejemplo, CARD, INTERNAL, EXTERNAL, etc.)
+        balance:
+          type: object
+          description: Saldo total resultante después de aplicar el movimiento
+          properties:
+            available:
+              type: number
+              format: double
+              description: Saldo disponible tras el movimiento
+            currency:
+              type: string
+              description: Moneda del saldo
+      required:
+        - movementId
+        - date
+        - description
+        - amount
+        - currency
+        - type
+        - status
+        - balance
+        - source
