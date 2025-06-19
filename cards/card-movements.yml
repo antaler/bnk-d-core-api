@@ -4,34 +4,13 @@ info:
   description: API para obtener el listado de movimientos de una tarjeta bancaria
   version: 1.0.0
 
-paths:
-  /cards/{cardId}/movements:
-    get:
-      summary: Obtener movimientos de tarjeta
-      description: Recupera el listado de movimientos asociados a una tarjeta bancaria
-      parameters:
-        - name: cardId
-          in: path
-          required: true
-          description: Identificador único de la tarjeta
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Respuesta exitosa
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  movements:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/CardMovement'
-                required:
-                  - movements
-
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     CardMovement:
       type: object
@@ -72,3 +51,32 @@ components:
         - currency
         - type
         - status
+
+paths:
+  /cards/{cardId}/movements:
+    get:
+      summary: Obtener movimientos de tarjeta
+      description: Recupera el listado de movimientos asociados a una tarjeta bancaria
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          description: Identificador único de la tarjeta
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  movements:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CardMovement'
+                required:
+                  - movements

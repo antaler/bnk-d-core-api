@@ -1,0 +1,5 @@
+{
+  "alias": "user-key-001",
+  "algorithm": "RSA",
+  "value": "1234"
+}

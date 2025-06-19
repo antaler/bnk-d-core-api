@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  title: Card PIN Validation API
+  description: API to validate a card PIN (encrypted)
+  version: 1.0.0
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /cards/validate-pin:
+    post:
+      summary: Validate card PIN
+      description: Validates the encrypted PIN for a card. Requires Bearer JWT authentication.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pan:
+                  type: string
+                  description: Card PAN (Primary Account Number)
+                encryptedPin:
+                  type: string
+                  description: Encrypted PIN value
+              required:
+                - pan
+                - encryptedPin
+      responses:
+        '200':
+          description: PIN is valid (empty response)
+        '401':
+          description: Invalid or expired token, or PIN validation failed

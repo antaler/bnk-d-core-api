@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  title: Data Decryption Service API
+  description: API to decrypt data using a private key identified by alias
+  version: 1.0.0
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /decrypt:
+    post:
+      summary: Decrypt data
+      description: Decrypts a value using the private key associated with the provided alias and algorithm. Requires Bearer JWT authentication.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                alias:
+                  type: string
+                  description: Alias to identify the private key
+                algorithm:
+                  type: string
+                  description: Encryption algorithm (e.g., RSA, AES)
+                value:
+                  type: string
+                  description: Value to be decrypted (encrypted)
+              required:
+                - alias
+                - algorithm
+                - value
+      responses:
+        '200':
+          description: Data decrypted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  decrypted:
+                    type: string
+                    description: Decrypted value (plain text)
+                required:
+                  - decrypted
+        '401':
+          description: Invalid or expired token
+        '404':
+          description: Alias not found
+        '400':
+          description: Invalid request

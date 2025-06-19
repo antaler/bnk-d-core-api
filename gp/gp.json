@@ -1,0 +1,22 @@
+{
+  "accounts": [
+    {
+      "accountId": "ACC123456789",
+      "accountType": "SAVINGS",
+      "status": "ACTIVE",
+      "balance": {
+        "available": 5000.75,
+        "currency": "EUR"
+      },
+      "imageCode": "SAVINGS_BLUE"
+    }
+  ],
+  "cards": [
+    {
+      "cardId": "CARD123456789",
+      "cardType": "DEBIT",
+      "status": "ACTIVE",
+      "imageCode": "VISA_DEBIT_BLUE"
+    }
+  ]
+}

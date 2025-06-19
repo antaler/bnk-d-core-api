@@ -1,0 +1,44 @@
+openapi: 3.0.0
+info:
+  title: Card State Management API
+  description: API to modify the state of a card (turn on/off)
+  version: 1.0.0
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /cards/state:
+    patch:
+      summary: Change card state
+      description: Enable or disable a card. Requires Bearer JWT authentication.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pan:
+                  type: string
+                  description: Card PAN (Primary Account Number)
+                state:
+                  type: string
+                  enum: [ON, OFF]
+                  description: Desired state for the card
+              required:
+                - pan
+                - state
+      responses:
+        '200':
+          description: Card state updated (empty response)
+        '401':
+          description: Invalid or expired token, or card validation failed
+        '403':
+          description: Forbidden. State change not allowed

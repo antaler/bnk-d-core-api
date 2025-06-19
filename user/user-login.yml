@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: User Login API
+  description: API to authenticate a user by document or card and return an OAuth token
+  version: 1.0.0
+
+paths:
+  /login:
+    post:
+      summary: User login by document or card
+      description: Authenticates a user using a document (DNI, CARD, PASSPORT) and password or PIN, returning an OAuth token. The request must include a type indicator, alias, and password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    description: OAuth access token
+                  token_type:
+                    type: string
+                    example: Bearer
+                  expires_in:
+                    type: integer
+                    description: Token expiration time in seconds
+                required:
+                  - access_token
+                  - token_type
+                  - expires_in
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  error_description:
+                    type: string
+                required:
+                  - error
+                  - error_description
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [DNI, CARD, PASSPORT]
+          description: Indicates the type of document or card used for login
+        alias:
+          type: string
+          description: Document number, card number, or passport number
+        password:
+          type: string
+          format: password
+          description: Password or PIN
+      required:
+        - type
+        - alias
+        - password

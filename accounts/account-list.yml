@@ -1,0 +1,89 @@
+openapi: 3.0.0
+info:
+  title: Account List API
+  description: API for retrieving a list of bank accounts
+  version: 1.0.0
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /accounts:
+    get:
+      summary: Get a list of accounts
+      description: Retrieve a summarized list of accounts
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accounts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AccountSummary'
+                required:
+                  - accounts
+
+components:
+  schemas:
+    AccountSummary:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: Unique identifier for the account
+        accountNumber:
+          type: string
+          description: Account number
+        accountType:
+          type: string
+          enum: [SAVINGS, CHECKING, CREDIT, MONEY_MARKET, CERTIFICATE_OF_DEPOSIT, BUSINESS]
+          description: Type of the account
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE, BLOCKED, DORMANT, FROZEN, PENDING_APPROVAL]
+          description: Current status of the account
+        balance:
+          type: object
+          properties:
+            available:
+              type: number
+              format: double
+              description: Available balance that can be withdrawn
+            currency:
+              type: string
+              description: Currency code (e.g., USD, EUR)
+        primaryHolder:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name of the primary account holder
+            customerId:
+              type: string
+              description: ID of the primary account holder
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        imageCode:
+          type: string
+          description: Code for the image to display for the account
+      required:
+        - accountId
+        - accountNumber
+        - accountType
+        - status
+        - balance
+        - primaryHolder
+        - lastUpdated
+        - imageCode

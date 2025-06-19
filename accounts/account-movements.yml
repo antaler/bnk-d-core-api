@@ -4,11 +4,20 @@ info:
   description: API para obtener el listado de movimientos de una cuenta bancaria
   version: 1.0.0
 
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
 paths:
   /accounts/{accountId}/movements:
     get:
       summary: Obtener movimientos de cuenta
       description: Recupera el listado de movimientos asociados a una cuenta bancaria
+      security:
+        - bearerAuth: []
       parameters:
         - name: accountId
           in: path
@@ -64,9 +73,6 @@ components:
         counterparty:
           type: string
           description: Nombre del beneficiario, pagador o contraparte
-        source:
-          type: string
-          description: Origen del movimiento (por ejemplo, CARD, INTERNAL, EXTERNAL, etc.)
         balance:
           type: object
           description: Saldo total resultante después de aplicar el movimiento
@@ -87,4 +93,3 @@ components:
         - type
         - status
         - balance
-        - source
